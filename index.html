@@ -61,39 +61,34 @@ section { padding:50px 20px; }
   color: #0d1b2a;
 }
 
-/* Slider */
 .slider {
-  overflow: hidden;
-  margin-bottom: 40px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+  padding: 20px 0;
 }
 
 .slider-track {
   display: flex;
   gap: 20px;
-  width: max-content;
-  animation: scroll 12s linear infinite;
 }
 
 .slider-track img {
   height: 220px;
   border-radius: 10px;
   object-fit: cover;
+  flex-shrink: 0; /* prevent shrinking */
+  cursor: pointer;
   transition: transform 0.3s;
 }
 
 .slider-track img:hover {
-  transform: scale(1.20);
+  transform: scale(1.05);
 }
 
-/* Pause on hover */
-.slider:hover .slider-track {
-  animation-play-state: paused;
-}
-
-/* Animation */
-@keyframes scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+/* Optional: hide scrollbar for clean look */
+.slider::-webkit-scrollbar {
+  display: none;
 }
 
 .contact-form {
@@ -204,19 +199,18 @@ footer {
 <h2 style="text-align:center;">Our Recent Work</h2>
 <section class="recent-work">
 
-  <!-- Image Slider -->
-  <div class="slider">
-    <div class="slider-track">
-<img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img1.png">
-<img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img2.png">
-<img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img3.png">
-<img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img4.jpeg">
-<img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img5.jpeg">
-<img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img6.jpeg">
-     <img src="img2.png">
-  <img src="img3.png">
-    </div>
+<!-- Image Slider -->
+<div class="slider" id="slider">
+  <div class="slider-track">
+    <img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img1.png">
+    <img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img2.png">
+    <img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img3.png">
+    <img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img4.jpeg">
+    <img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img5.jpeg">
+    <img src="https://raw.githubusercontent.com/justjaswinder/ensure-electric/main/imgs/img6.jpeg">
+    
   </div>
+</div>
 
   <!-- Work Details -->
   <div class="section-content">
@@ -310,5 +304,25 @@ btn.onclick = () => {
 };
 </script>
 
+
+<script>
+  const slider = document.getElementById('slider');
+
+  let scrollAmount = 0; // how far we scrolled
+  const step = 1;        // pixels to scroll per frame
+
+  function autoScroll() {
+    scrollAmount += step;
+
+    // reset when we reach halfway (because we duplicated images for infinite loop)
+    if (scrollAmount >= slider.scrollWidth / 2) scrollAmount = 0;
+
+    slider.scrollLeft = scrollAmount;
+
+    requestAnimationFrame(autoScroll); // keeps it smooth
+  }
+
+  autoScroll();
+</script>
 </body>
 </html>
